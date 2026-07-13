@@ -1,0 +1,591 @@
+{
+  "datasets": [
+    {
+      "name": "resumen_clientes_bancario",
+      "displayName": "Resumen Clientes Bancario",
+      "config": {
+        "version": "1.1",
+        "source": "catalog_au.golden.resumenclientes",
+        "dimensions": [
+          {
+            "name": "Cliente ID",
+            "expr": "clienteid",
+            "displayName": "Cliente ID"
+          },
+          {
+            "name": "Nombre Cliente",
+            "expr": "nombrecompleto",
+            "displayName": "Nombre Cliente"
+          },
+          {
+            "name": "Ciudad",
+            "expr": "ciudad",
+            "displayName": "Ciudad"
+          },
+          {
+            "name": "Segmento Valor",
+            "expr": "CASE\n  WHEN totalmonto >= 1000 THEN 'Alto valor'\n  WHEN totalmonto >= 500 THEN 'Valor medio'\n  ELSE 'Valor base'\nEND",
+            "displayName": "Segmento de valor"
+          },
+          {
+            "name": "Banda Actividad",
+            "expr": "CASE\n  WHEN totaltransacciones >= 3 THEN 'Alta'\n  WHEN totaltransacciones = 2 THEN 'Media'\n  ELSE 'Baja'\nEND",
+            "displayName": "Banda de actividad"
+          },
+          {
+            "name": "Banda Ticket Promedio",
+            "expr": "CASE\n  WHEN promediomonto >= 500 THEN 'Ticket alto'\n  WHEN promediomonto >= 250 THEN 'Ticket medio'\n  ELSE 'Ticket bajo'\nEND",
+            "displayName": "Banda de ticket promedio"
+          }
+        ],
+        "measures": [
+          {
+            "name": "total_clientes",
+            "expr": "COUNT(DISTINCT clienteid)",
+            "displayName": "Total clientes"
+          },
+          {
+            "name": "monto_total",
+            "expr": "SUM(totalmonto)",
+            "displayName": "Monto total",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "total_transacciones",
+            "expr": "SUM(totaltransacciones)",
+            "displayName": "Total transacciones",
+            "format": {
+              "type": "number",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 0.0
+              }
+            }
+          },
+          {
+            "name": "monto_promedio_cliente",
+            "expr": "MEASURE(monto_total) / MEASURE(total_clientes)",
+            "displayName": "Monto promedio por cliente",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "ticket_promedio",
+            "expr": "AVG(promediomonto)",
+            "displayName": "Ticket promedio",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "2fede3ba",
+      "displayName": "Page 1",
+      "layout": [
+        {
+          "widget": {
+            "name": "total_clientes",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "resumen_clientes_bancario",
+                  "fields": [
+                    {
+                      "name": "measure(total_clientes)",
+                      "expression": "MEASURE(`total_clientes`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Total de clientes",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_clientes)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "monto_total",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "resumen_clientes_bancario",
+                  "fields": [
+                    {
+                      "name": "measure(monto_total)",
+                      "expression": "MEASURE(`monto_total`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Monto total",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(monto_total)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "total_transacciones",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "resumen_clientes_bancario",
+                  "fields": [
+                    {
+                      "name": "measure(total_transacciones)",
+                      "expression": "MEASURE(`total_transacciones`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Transacciones totales",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_transacciones)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "monto_promedio_cliente",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "resumen_clientes_bancario",
+                  "fields": [
+                    {
+                      "name": "measure(monto_promedio_cliente)",
+                      "expression": "MEASURE(`monto_promedio_cliente`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Monto promedio por cliente",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(monto_promedio_cliente)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 0,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "clientes_por_ciudad",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "resumen_clientes_bancario",
+                  "fields": [
+                    {
+                      "name": "Ciudad",
+                      "expression": "`Ciudad`"
+                    },
+                    {
+                      "name": "measure(total_clientes)",
+                      "expression": "MEASURE(`total_clientes`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Clientes por ciudad",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Ciudad",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_clientes)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Ciudad",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "monto_por_ciudad",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "resumen_clientes_bancario",
+                  "fields": [
+                    {
+                      "name": "Ciudad",
+                      "expression": "`Ciudad`"
+                    },
+                    {
+                      "name": "measure(monto_total)",
+                      "expression": "MEASURE(`monto_total`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Monto total por ciudad",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Ciudad",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(monto_total)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Ciudad",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 3,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "segmentacion_valor",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "resumen_clientes_bancario",
+                  "fields": [
+                    {
+                      "name": "Segmento Valor",
+                      "expression": "`Segmento Valor`"
+                    },
+                    {
+                      "name": "measure(monto_total)",
+                      "expression": "MEASURE(`monto_total`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Monto total por segmento de valor",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Segmento Valor",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(monto_total)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Segmento Valor",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 4,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "actividad_por_banda",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "resumen_clientes_bancario",
+                  "fields": [
+                    {
+                      "name": "Banda Actividad",
+                      "expression": "`Banda Actividad`"
+                    },
+                    {
+                      "name": "measure(total_transacciones)",
+                      "expression": "MEASURE(`total_transacciones`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Transacciones por banda de actividad",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Banda Actividad",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_transacciones)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Banda Actividad",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 8,
+            "width": 4,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "ticket_promedio_por_banda",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "resumen_clientes_bancario",
+                  "fields": [
+                    {
+                      "name": "Banda Ticket Promedio",
+                      "expression": "`Banda Ticket Promedio`"
+                    },
+                    {
+                      "name": "measure(ticket_promedio)",
+                      "expression": "MEASURE(`ticket_promedio`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Ticket promedio por banda",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Banda Ticket Promedio",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(ticket_promedio)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Banda Ticket Promedio",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 8,
+            "width": 4,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
