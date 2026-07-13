@@ -1,0 +1,10 @@
+cuentaid,clienteid,tipocuenta,fechaapertura,saldo
+101,1,Ahorros,2020-01-10,1500.50
+102,1,Corriente,2021-05-12,500.00
+103,2,Ahorros,2019-11-20,3200.75
+104,3,Corriente,2022-03-01,250.00
+105,4,Ahorros,2021-07-15,980.00
+106,5,Corriente,2020-09-05,1200.00
+107,6,Ahorros,2018-06-22,4500.00
+108,7,Corriente,2022-11-11,300.00
+109,8,Ahorros,2023-02-14,750.00
