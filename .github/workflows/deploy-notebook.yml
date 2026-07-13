@@ -18,7 +18,7 @@ jobs:
         ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
         ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
         NOTEBOOK_BASE="/Workspace/Users/smartdata_gr15@outlook.com/CICDSMARTDATA2906/proceso"
-        NOTEBOOKS=("1.Preparacion_Ambiente" "2.Ingest clientes data" "2.Ingest cuentas data" "2.Ingest transacciones data" "3.Transform" "4.Load" "5.Accesos")
+        NOTEBOOKS=("1.Preparacion_Ambiente" "2.Ingest_clientes_data" "2.Ingest_cuentas_data" "2.Ingest_transacciones_data" "3.Transform" "4.Load" "5.Accesos")
         mkdir -p notebooks_to_deploy
         for nb in "${NOTEBOOKS[@]}"; do
           echo "Exportando $nb en modo raw..."
@@ -144,7 +144,7 @@ jobs:
               "task_key": "ingest_clientes",
               "description": "Ejecuta notebook ingest_clientes con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/2.Ingest clientes data",
+                "notebook_path": "/proyecto/2.Ingest_clientes_data",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "container": "raw",
@@ -166,7 +166,7 @@ jobs:
               "task_key": "ingest_cuentas",
               "description": "Ejecuta notebook ingest_cuentas con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/2.Ingest cuentas data",
+                "notebook_path": "/proyecto/2.Ingest_cuentas_data",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "container": "raw",
@@ -188,7 +188,7 @@ jobs:
               "task_key": "ingest_transacciones",
               "description": "Ejecuta notebook ingest_transacciones con parámetros",
               "notebook_task": {
-                "notebook_path": "/proyecto/2.Ingest transacciones data",
+                "notebook_path": "/proyecto/2.Ingest_transacciones_data",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "container": "raw",
